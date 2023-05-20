@@ -9,9 +9,11 @@
 #define D9 9
 #define D10 10
 #define D11 11
-#define D12 1
+#define D12 12
 #define D13 13
 #define DIM 9
+
+int cont = 0;
 
 int marker[DIM][2] = {
   {0, 0},
@@ -37,131 +39,95 @@ int test_trails[DIM][2] = {
     {3, 7}
 };
 
+int testPin(int pin, int pos){
+  if (!digitalRead(pin)){
+    while(1){
+      if(marker[cont][0]==0 && marker[cont][1]==0){
+        marker[cont][0] = test_trails[pos][0];
+        marker[cont][1] = test_trails[pos][1];
+        cont++;
+        break;
+      }else{
+        cont++;
+      }
+    }
+  }
+}
+
+void finish(){
+  delay(10);
+  finish();
+}
+
 void setup() {
   Serial.begin(115200);
-  pinMode(D2, INPUT);
-  pinMode(D3, INPUT);
-  pinMode(D4, INPUT);
-  pinMode(D5, INPUT);
-  pinMode(D6, INPUT);
-  pinMode(D7, INPUT);
-  pinMode(D8, INPUT);
-  pinMode(D9, INPUT);
-  pinMode(D10, INPUT);
-  pinMode(D11, INPUT);
-  pinMode(D12, INPUT);
-  pinMode(D13, INPUT);
+  pinMode(D2, INPUT_PULLUP);
+  pinMode(D3, INPUT_PULLUP);
+  pinMode(D4, INPUT_PULLUP);
+  pinMode(D5, INPUT_PULLUP);
+  pinMode(D6, INPUT_PULLUP);
+  pinMode(D7, INPUT_PULLUP);
+  pinMode(D8, INPUT_PULLUP);
+  pinMode(D9, INPUT_PULLUP);
+  pinMode(D10, INPUT_PULLUP);
+  pinMode(D11, INPUT_PULLUP);
+  pinMode(D12, INPUT_PULLUP);
+  pinMode(D13, INPUT_PULLUP);
 }
 
 void loop() {
-  int i = 0;
-  int cont = 0;
-  delay(3000);
+  
+  delay(1000);
 
-  //--------------------Check 1----------------------//
+  //D2 -> 1
+  //D3 -> 2
+  //D4 -> 3
+  //D5 -> 5
+  //D6 -> 6
+  //D7 -> 7
+
+  //----------------------------------------------------------------------//
 
   pinMode(D2, OUTPUT);
-  pinMode(D3, INPUT);
-  pinMode(D4, INPUT);
-  pinMode(D5, INPUT);
-  digitalWrite(D2, HIGH);
-
-  if (digitalRead(D3)){
-    while(1){
-      if(marker[i][0]==0 && marker[i][1]==0){
-        marker[i][0] = test_trails[0][0];
-        marker[i][1] = test_trails[0][1];
-        cont++;
-        i++;
-        break;
-      }else{
-        i++;
-      }
-    }
-  }
-
-  if (digitalRead(D4)){
-    while(1){
-      if(marker[i][0]==0 && marker[i][1]==0){
-        marker[i][0] = test_trails[1][0];
-        marker[i][1] = test_trails[1][1];
-        cont++;
-        i++;
-        break;
-      }else{
-        i++;
-      }
-    }
-  }
-
-  if (digitalRead(D5)){
-    while(1){
-      if(marker[i][0]==0 && marker[i][1]==0){
-        marker[i][0] = test_trails[2][0];
-        marker[i][1] = test_trails[2][1];
-        cont++;
-        i++;
-        break;
-      }else{
-        i++;
-      }
-    }
-  }
-
   digitalWrite(D2, LOW);
 
-  pinMode(D2, INPUT);
+  testPin(D4, 0);
+  testPin(D5, 1);
+  testPin(D7, 2);
+
+  digitalWrite(D2, HIGH);
+  pinMode(D2, INPUT_PULLUP);
+
+  //----------------------------------------------------------------------//
+
   pinMode(D3, OUTPUT);
-  pinMode(D4, INPUT);
-  pinMode(D5, INPUT);
+  digitalWrite(D3, LOW);
+
+  testPin(D4, 3);
+  testPin(D5, 4);
+  testPin(D6, 5);
+
   digitalWrite(D3, HIGH);
+  pinMode(D3, INPUT_PULLUP);
 
-  if (digitalRead(D2)){
-    while(1){
-      if(marker[i][0]==0 && marker[i][1]==0){
-        marker[i][0] = test_trails[3][0];
-        marker[i][1] = test_trails[3][1];
-        cont++;
-        i++;
-        break;
-      }else{
-        i++;
-      }
-    }
-  }
+  //----------------------------------------------------------------------//
 
-  if (digitalRead(D4)){
-    while(1){
-      if(marker[i][0]==0 && marker[i][1]==0){
-        marker[i][0] = test_trails[4][0];
-        marker[i][1] = test_trails[4][1];
-        cont++;
-        i++;
-        break;
-      }else{
-        i++;
-      }
-    }
-  }
+  pinMode(D4, OUTPUT);
+  digitalWrite(D4, LOW);
 
-  if (digitalRead(D5)){
-    while(1){
-      if(marker[i][0]==0 && marker[i][1]==0){
-        marker[i][0] = test_trails[5][0];
-        marker[i][1] = test_trails[5][1];
-        cont++;
-        i++;
-        break;
-      }else{
-        i++;
-      }
-    }
-  }
+  testPin(D5, 6);
+  testPin(D6, 7);
+  testPin(D7, 8);
+
+  digitalWrite(D3, HIGH);
+  pinMode(D4, INPUT_PULLUP);
+
+  //----------------------------------------------------------------------//
 
   if(cont==0){
-    Serial.println("No short!");
+    Serial.println("No shorts!");
   }else{
-    Serial.println("Short found:");
+    Serial.println("Shorts founds:");
     for(int x=0; x<cont; x++){
       Serial.print("Trails ");
       for(int y=0; y<2; y++){
@@ -174,6 +140,6 @@ void loop() {
     }
   }
 
-  delay(999999);
+  finish();
 
 }
