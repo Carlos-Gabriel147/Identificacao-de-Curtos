@@ -1,7 +1,9 @@
-import cv2
 import numpy as np
 import time
 import json
+import cv2
+import sys
+import os
 
 #Variáveis
 ray = -1
@@ -12,8 +14,20 @@ found_labels = []
 remove = []
 ignore = []
 
+print("Name of circuit image with extension:")
+img_name = ""
+test_name = 1
+
+while (test_name):
+    print("Enter name of circuit image:")
+    img_name = input("R: ")
+    if (not os.path.exists(img_name)):
+        print("Image not found!")
+    else:
+        test_name = 0
+
 #Abertura do circuito e ajustes
-img = cv2.imread("circuito4.bmp")
+img = cv2.imread(img_name)
 img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 (height, width) = img.shape[:2]
 
@@ -189,6 +203,7 @@ print()
 print(f"Number of labels: {num_labels-1}")
 
 #Printar Trilhas para teste
+print()
 print("Trails to check:", end='')
 if len(test_trails) == 0:
     print(" None!")
@@ -198,7 +213,7 @@ else:
         print(f"[{x[0]} -> {x[1]}]")
 
 #Escreve JSON
-if sel_jason:
+if (sel_jason and (len(test_trails)>0)):
     for i in range(0, len(test_trails)):
         for j in range(0, len(test_trails[0])):
             test_trails[i][j] = int(test_trails[i][j])
