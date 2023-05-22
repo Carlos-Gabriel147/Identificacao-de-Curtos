@@ -1,2 +1,0 @@
-DIM = quantidade de pares de trilhas para teste
-Construir a variável test_trails

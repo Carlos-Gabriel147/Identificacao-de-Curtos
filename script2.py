@@ -4,6 +4,22 @@ import sys
 import os
 import shutil
 
+plates = [["Yún", 20-2], ["Uno", 14-2], ["Pro Mini", 14-2], ["Duemilanove", 14-2], ["Mega", 54-2], ["Leonardo", 20-2], ["Micro", 20-2], ["Esplora", 20-2], ["Ethernet", 14-2], ["Fio", 14-2], ["BT", 14-2]]
+sel = -1
+
+print("Insert the card you are using to check if the number of digital ports are compatible (excluding D0 and D1). It might work with other boards that support ino programming.")
+print("Select your micro:")
+
+for index, value in enumerate(plates):
+    print(f"{index+1}){value[0]}")
+
+while (sel<0) or (sel>10):
+    sel = input("R: ")
+    if sel.isdigit():
+        sel = int(sel) -1
+    else:
+        sel = -1
+
 if not os.path.exists("data.json"):
     print("Json file not find!")
     sys.exit()
@@ -20,8 +36,8 @@ main_code = ''
 line = "//-------------------------------------//\n"
 
 #Verificar o número máximo de trilhas
-if(amt_trails>52):
-    print("Max number of trails exceeded! (54)");
+if(amt_trails>plates[sel][1]):
+    print(f"Max number of trails exceeded! ({plates[sel][1]})");
     sys.exit(1)
 
 #Criar uma dicionário que relacione as trilhas com os pinos digitais
@@ -42,7 +58,7 @@ for sb in test_trails:
         sub_lists[index].append(sb)
 
 #Adicionar as definições dos pinos
-for i in range(2, 53):
+for i in range(2, (plates[sel][1]+2)):
     main_code += f"#define D{i} {i}\n"
 
 #Adicionar vetores principais, teste de trilhas e marcador de curtos
@@ -101,7 +117,7 @@ main_code += "\n"
 #Setup, definir modos
 main_code += "void setup(){\n"
 main_code += "  Serial.begin(115200);\n"
-for i in range(2, 53):
+for i in range(2, (plates[sel][1]+2)):
     main_code += f"  pinMode(D{i}, INPUT_PULLUP);\n"
 main_code += "}\n"
 main_code += "\n"
