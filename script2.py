@@ -184,17 +184,17 @@ main_code += "    delay(10);\n"
 main_code += "  }\n"
 main_code += "}"
 
-dir_name = "file"
+dir_name = "ino_file"
 
 #Excluir pasta se já existir, criar se não
-if os.path.exists("file"):
-    shutil.rmtree("file")
+if os.path.exists(dir_name):
+    shutil.rmtree(dir_name)
 
 #Criar uma pasta
 os.mkdir(dir_name)
 
 #Criar o arquivo ino dentro da pasta
-file_name = "file.ino"
+file_name = dir_name + ".ino"
 path = os.path.join(dir_name, file_name)
 with open(path, 'w') as file:
     file.write(main_code)
