@@ -2,7 +2,6 @@ import numpy as np
 import time
 import json
 import cv2
-import sys
 import os
 
 #Variáveis
@@ -95,6 +94,9 @@ print(f"{round(time.time()-start_time, 2)}s")
 time_aux = time.time()
 print("Processing...")
 
+#Aumentar bordas em tamanho de RAY na máscara para não acontecer estouro de vetor
+mask = cv2.copyMakeBorder(mask, ray, ray, ray, ray, cv2.BORDER_CONSTANT, value=(0))
+
 #Verificar distâncias
 for h in range(0, height):
     for w in range(0, width):
@@ -130,6 +132,9 @@ for h in range(0, height):
                     if ([current_label, x] not in test_trails):
                         test_trails.append([current_label, x])
 
+#Remover bordas adicionadas anteriormente
+mask = mask[ray:(height+ray), ray:(width+ray)]
+
 print(f"{round(time.time()-time_aux, 2)}s")
 time_aux = time.time()
 print("Organizing...")
@@ -164,21 +169,26 @@ for pos, val in enumerate(test_trails):
 #Desenhar números de identificação de cada trilha
 font = cv2.FONT_HERSHEY_DUPLEX
 font_size = ((height/900) + (width/900))/2
+spacing = int(font_size*20)
+
+mask = cv2.copyMakeBorder(mask, spacing, spacing, spacing, spacing, cv2.BORDER_CONSTANT, value=(0))
+mask_copy = cv2.copyMakeBorder(np.array(mask_copy), spacing, spacing, spacing, spacing, cv2.BORDER_CONSTANT, value=(0))
+img_labels = cv2.copyMakeBorder(img_labels, spacing, spacing, spacing, spacing, cv2.BORDER_CONSTANT, value=(30, 30, 30))
 
 for h in range(0, height):
     for w in range(0, width):
         if (mask[h][w] != 0) and (mask[h][w] not in ignore):
             color = (colors[mask_copy[h][w]]).tolist()
-            color[0] += 30
-            color[1] += 30
-            color[2] += 30
+            color[0] += 35
+            color[1] += 35
+            color[2] += 35
             color = tuple(color)
             cv2.putText(img_labels, str(mask[h][w]), (w, h), font, font_size, color, thickness=2, lineType=cv2.LINE_AA)
             ignore.append(mask[h][w])
 
 #Aumentar o tamanho da imagem, proporcionalmente para escrever o raio
 amt_rows = int(height/10)
-new_rows = np.ones((amt_rows, width, 3), dtype=np.uint8)
+new_rows = np.ones((amt_rows, (width+2*spacing), 3), dtype=np.uint8)
 color_rows = np.array([30, 30, 30],  dtype=np.uint8)
 new_rows *= color_rows
 img_labels = np.concatenate((img_labels, new_rows))
@@ -226,6 +236,7 @@ if (sel_jason and (len(test_trails)>0)):
 #Verificar saída, redimensionar apenas para visualização
 img_labels = cv2.cvtColor(img_labels, cv2.COLOR_BGR2RGB)
 img_labels = cv2.resize(img_labels, (1000, 600))
+cv2.imwrite("identified_trails.png", img_labels)
 
 #Finalizar cronômetro
 end_time = time.time()
