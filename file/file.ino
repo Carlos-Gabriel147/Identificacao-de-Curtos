@@ -50,11 +50,19 @@
 #define D51 51
 #define D52 52
 #define D53 53
-#define DIM 4
+#define DIM 12
 
 int cont = 0;
 
 int marker[DIM][2] = {
+{0, 0},
+{0, 0},
+{0, 0},
+{0, 0},
+{0, 0},
+{0, 0},
+{0, 0},
+{0, 0},
 {0, 0},
 {0, 0},
 {0, 0},
@@ -63,12 +71,20 @@ int marker[DIM][2] = {
 
 int test_trails[DIM][2] = {
 {1, 5},
+{1, 6},
+{2, 4},
+{3, 4},
+{4, 5},
 {4, 6},
+{4, 10},
+{4, 11},
 {5, 8},
-{9, 13}
+{5, 11},
+{6, 7},
+{6, 9}
 };
 
-int unique_trails[7] = {1,4,5,6,8,9,13};
+int unique_trails[11] = {1,2,3,4,5,6,7,8,9,10,11};
 
 int testPin(int pin, int pos){
   if (!digitalRead(pin)){
@@ -143,7 +159,7 @@ void setup(){
 
 void loop(){
 
-  delay(1000);
+  delay(500);
 
   Serial.println("Trails -> Digital Pins");
   for(int i; i < sizeof(unique_trails)/sizeof(unique_trails[0]); i++){
@@ -152,13 +168,18 @@ void loop(){
     Serial.print('D');
     Serial.println(i+2);
   }
+  Serial.println();
+
+  Serial.println("Ready?");
+  Serial.read();
 
 //-------------------------------------//
 
   pinMode(D2, OUTPUT);
   digitalWrite(D2, LOW);
 
-  testPin(D4, 0);
+  testPin(D6, 0);
+  testPin(D7, 1);
 
   digitalWrite(D2, HIGH);
   pinMode(D2, INPUT_PULLUP);
@@ -168,7 +189,7 @@ void loop(){
   pinMode(D3, OUTPUT);
   digitalWrite(D3, LOW);
 
-  testPin(D5, 1);
+  testPin(D5, 2);
 
   digitalWrite(D3, HIGH);
   pinMode(D3, INPUT_PULLUP);
@@ -178,17 +199,42 @@ void loop(){
   pinMode(D4, OUTPUT);
   digitalWrite(D4, LOW);
 
-  testPin(D6, 2);
+  testPin(D5, 3);
 
   digitalWrite(D4, HIGH);
   pinMode(D4, INPUT_PULLUP);
 
 //-------------------------------------//
 
+  pinMode(D5, OUTPUT);
+  digitalWrite(D5, LOW);
+
+  testPin(D6, 4);
+  testPin(D7, 5);
+  testPin(D11, 6);
+  testPin(D12, 7);
+
+  digitalWrite(D5, HIGH);
+  pinMode(D5, INPUT_PULLUP);
+
+//-------------------------------------//
+
+  pinMode(D6, OUTPUT);
+  digitalWrite(D6, LOW);
+
+  testPin(D9, 8);
+  testPin(D12, 9);
+
+  digitalWrite(D6, HIGH);
+  pinMode(D6, INPUT_PULLUP);
+
+//-------------------------------------//
+
   pinMode(D7, OUTPUT);
   digitalWrite(D7, LOW);
 
-  testPin(D8, 3);
+  testPin(D8, 10);
+  testPin(D10, 11);
 
   digitalWrite(D7, HIGH);
   pinMode(D7, INPUT_PULLUP);
@@ -210,6 +256,8 @@ void loop(){
       Serial.println();
     }
   }
+
+  Serial.println();
 
   while(1){
     delay(10);
