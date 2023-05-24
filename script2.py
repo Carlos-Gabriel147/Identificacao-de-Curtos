@@ -136,6 +136,11 @@ main_code += '    Serial.print(" -> ");\n'
 main_code += "    Serial.print('D');\n"
 main_code += "    Serial.println(i+2);\n"
 main_code += "  }\n"
+main_code += "\n"
+main_code += "  Serial.println();\n"
+main_code += "\n"
+main_code += '  Serial.println("Ready? (Enter any key):");\n'
+main_code += "  while(Serial.read() == -1){delay(1);}\n"
 
 main_code += "\n"
 main_code += line
@@ -178,6 +183,8 @@ main_code += "      }\n"
 main_code += "      Serial.println();\n"
 main_code += "    }\n"
 main_code += "  }\n"
+main_code += "\n"
+main_code += "  Serial.println();\n"
 main_code += "\n"
 main_code += "  while(1){\n"
 main_code += "    delay(10);\n"

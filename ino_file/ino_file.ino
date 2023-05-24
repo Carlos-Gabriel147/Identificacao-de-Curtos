@@ -169,6 +169,11 @@ void loop(){
     Serial.println(i+2);
   }
 
+  Serial.println();
+
+  Serial.println("Ready? (Enter any key):");
+  while(Serial.read() == -1){delay(1);}
+
 //-------------------------------------//
 
   pinMode(D2, OUTPUT);
@@ -252,6 +257,8 @@ void loop(){
       Serial.println();
     }
   }
+
+  Serial.println();
 
   while(1){
     delay(10);
