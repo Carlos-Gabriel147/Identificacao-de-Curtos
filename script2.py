@@ -4,7 +4,11 @@ import sys
 import os
 import shutil
 
-plates = [["Yún", 20-2], ["Uno", 14-2], ["Pro Mini", 14-2], ["Duemilanove", 14-2], ["Mega", 54-2], ["Leonardo", 20-2], ["Micro", 20-2], ["Esplora", 20-2], ["Ethernet", 14-2], ["Fio", 14-2], ["BT", 14-2]]
+dir_name = "ino_file"
+file_name = dir_name + ".ino"
+amt_upins = 2
+
+plates = [["Yún", 20-amt_upins], ["Uno", 14-amt_upins], ["Pro Mini", 14-amt_upins], ["Duemilanove", 14-amt_upins], ["Mega", 54-amt_upins], ["Leonardo", 20-amt_upins], ["Micro", 20-amt_upins], ["Esplora", 20-amt_upins], ["Ethernet", 14-amt_upins], ["Fio", 14-amt_upins], ["BT", 14-amt_upins]]
 sel = -1
 
 print("Insert the card you are using to check if the number of digital ports are compatible (excluding D0 and D1). It might work with other boards that support ino programming.")
@@ -58,7 +62,7 @@ for sb in test_trails:
         sub_lists[index].append(sb)
 
 #Adicionar as definições dos pinos
-for i in range(2, (plates[sel][1]+2)):
+for i in range(amt_upins, (plates[sel][1]+amt_upins)):
     main_code += f"#define D{i} {i}\n"
 
 #Adicionar vetores principais, teste de trilhas e marcador de curtos
@@ -117,7 +121,7 @@ main_code += "\n"
 #Setup, definir modos
 main_code += "void setup(){\n"
 main_code += "  Serial.begin(115200);\n"
-for i in range(2, (plates[sel][1]+2)):
+for i in range(amt_upins, (plates[sel][1]+amt_upins)):
     main_code += f"  pinMode(D{i}, INPUT_PULLUP);\n"
 main_code += "}\n"
 main_code += "\n"
@@ -189,8 +193,6 @@ main_code += "    delay(10);\n"
 main_code += "  }\n"
 main_code += "}"
 
-dir_name = "ino_file"
-
 #Excluir pasta se já existir, criar se não
 if os.path.exists(dir_name):
     shutil.rmtree(dir_name)
@@ -199,7 +201,6 @@ if os.path.exists(dir_name):
 os.mkdir(dir_name)
 
 #Criar o arquivo ino dentro da pasta
-file_name = dir_name + ".ino"
 path = os.path.join(dir_name, file_name)
 with open(path, 'w') as file:
     file.write(main_code)
