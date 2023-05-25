@@ -125,8 +125,6 @@ main_code += "\n"
 #Início do loop
 main_code += "void loop(){\n"
 main_code += "\n"
-main_code += "  delay(1000);\n"
-main_code += "\n"
 
 #Printar relação de trilhas e pinos digitais
 main_code += '  Serial.println("Trails -> Digital Pins");\n'

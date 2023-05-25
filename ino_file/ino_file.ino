@@ -159,8 +159,6 @@ void setup(){
 
 void loop(){
 
-  delay(1000);
-
   Serial.println("Trails -> Digital Pins");
   for(int i; i < sizeof(unique_trails)/sizeof(unique_trails[0]); i++){
     Serial.print(unique_trails[i]);
