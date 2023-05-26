@@ -230,9 +230,14 @@ if (sel_jason and (len(test_trails)>0)):
 
     dictionary = {i: lista for i, lista in enumerate(test_trails)}
 
-    with open("data.json", "w") as archive:
+    with open("data.json", 'w') as archive:
         json.dump(dictionary, archive)
 
+#Escreve TXT
+with open("trails_to_test.txt", 'w') as archive:
+    for x in test_trails:
+        archive.write(str(x[0]) + " -> " + str(x[1]) + "\n")
+    
 #Verificar saída, redimensionar apenas para visualização
 img_labels = cv2.cvtColor(img_labels, cv2.COLOR_BGR2RGB)
 img_labels = cv2.resize(img_labels, (1000, 600))
